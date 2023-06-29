@@ -1,0 +1,250 @@
+<html>
+<head>
+<title>Hate Speech Detection System</title>
+<link href="pngegg.png" rel="icon">
+{% load static %}
+<style>
+body {    
+	top:0;
+	left:0;
+	padding: 0;
+	background-color : rgba(0,0,0,0.8);
+	{% comment %} background: rgba(0,0,0,0.8) url("mapb.png") top/cover no-repeat  ; {% endcomment %}
+	background: rgba(0,0,0,0.8) url("{% static 'mapb.png' %}") top/cover no-repeat  ;
+	 background-blend-mode: overlay;
+	font-family: "Courier New", monospace;
+	color: #fff;
+	cursor:url(cursor.cur),default;
+	}
+#wrapper {
+	background: rgba(0,0,0,0.9);
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 50;
+	visibility: hidden;
+}
+#error {
+	position: fixed;
+	background: #fff;
+	width: 25rem ;
+	left: 35%;
+	top: 25%;
+	height:15rem;
+	border-radius: 1rem;
+	z-index: 100;
+	color: #000;
+	visibility: hidden;
+	
+}
+.errtitle {
+	color: #fff;
+	background: #000 url("{% static 'mapb.png' %}") top/cover no-repeat;
+	background-blend-mode: lighten;
+	border-radius: 1rem 1rem 0 0;
+	font-weight: 1000; 
+	
+	padding: 1rem;
+	margin-bottom: 2rem;
+}
+#errcont {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.btnerr {
+	padding : 0.2rem 0.5rem;
+	font-size: 1.2rem;
+	margin-top: 2rem;
+	cursor: pointer;
+}
+header {
+	display: flex;
+	font-size : 2.4rem;
+	font-weight: bolder;
+	height: 8.5rem ;
+	color: #fff;
+	justify-content : center;
+	align-items: center;
+	cursor: url("{% static 'cursor.cur' %}"),default;
+}
+main{	
+	width : 100%;
+	height : 33rem;
+	display: flex;
+	flex-direction: column;
+	justify-content : center;
+	align-items: center;
+	
+}
+.typer{
+	margin-bottom: 8rem; 
+	position: fixed;
+	top: 10rem;
+	padding: 0 15%;
+	color: #fff;
+}
+form {
+
+	width: 100%;
+	flex-direction: column;
+	display: flex;
+	justify-content:center;
+	align-items:center;
+}
+.text_input {
+	font-size: 1.4rem;
+	padding: 0.5rem;
+	background-color: rgba(0,0,0,0.2);
+	border-radius: 1rem;
+	width: 50%;
+	color: #fff;
+	margin-top: 7rem;
+	outline: none;
+}
+.text_input:hover {
+	box-shadow: 0 0 0.2rem #fff;
+	border: 1px solid #fff;
+}
+.text_input:focus {
+	background-color: rgba(0,0,0,0.4);
+	box-shadow: 0 0 0.2rem #fff;
+	border: 1px solid #fff;
+}
+#demoerr {
+	color: #999;
+	text-align: left;
+}
+.btn {
+	font-size: 1.2rem;
+	padding: 0.5rem 1rem;
+	margin-top: 2rem; 
+	border-radius: 0.7rem;
+	cursor: pointer;
+	border: 1px solid #fff;
+	color: #000;
+	background-color: rgba(255,255,255,0.9);
+	width: 6.5rem;
+}
+.btn:hover {
+	padding: 0.5rem 1rem;
+	
+	box-shadow: 0 0 0.4rem #fff;
+	
+}
+footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width:70%;
+	bottom: 0;
+	left: 0;
+	position:absolute;
+	background-color: rgba(0,0,0,0.4);
+	flex-wrap: wrap;
+	row-gap: 0.4rem;
+	flex-direction: column;
+	padding: 2.6rem 15%;
+}
+</style>
+<script>
+let text="";
+function handleform(e) {
+	
+	text = document.getElementById("text_input");
+	if(text.value=="") {
+		document.getElementById("errtxt").innerHTML = "Textfield can't be empty";
+		document.getElementById("demoerr").innerHTML = "*Input field can't be empty"; 
+		text.focus();
+	}
+	
+	/*else {	
+		document.getElementById("errtxt").innerHTML = text.value;
+		document.getElementById("demoerr").innerHTML = "*"+ text.value;
+		document.getElementById('wrapper').setAttribute('style','visibility:visible');
+		document.getElementById('error').setAttribute('style','visibility:visible');
+	} */
+}
+function hideerr() {
+	document.getElementById('wrapper').setAttribute('style','visibility:hidden');
+	document.getElementById('error').setAttribute('style','visibility:hidden');
+	
+}
+
+</script>
+</head>
+<body onload="typeWriter()">
+<section id="wrapper" class="wrapper">
+</section>
+
+
+<section id="error">
+<div class="errtitle" id="errtitle">Error</div>
+<div id="errcont">
+<div id="errtxt"> </div>
+<button class="btnerr" onclick="hideerr()">Okay </button>
+</div>
+</section>
+
+
+<header>
+Hate Speech Detection
+</header>
+
+<nav>
+
+</nav>
+
+<main>
+<section class="typer">
+<p id="demo"></p>
+
+<script>
+const txt = 'Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.Lorem ipsum dummy text blabla.';
+
+const txta = ['Four men have pleaded guilty to hate crime and false statement charges in Washington for assaulting a Black man because of his race. The defendants were members of various white supremacist groups.On Dec. 8, 2018 the four men entered a bar in Lynnwood Washington. The men repeatedly gave Nazi salutes once inside the bar. After the DJ a Black man objected to the men touching his DJ equipment the defendants attacked him while shouting racial slurs. Bystanders who attempted to intervene were also assaulted.', 'A Georgia man pleaded guilty to hate crime and firearms violations for shooting into two Clayton County convenience stores and attempting to kill those inside because of their race and ethnicity. According to the evidence the defendant first fired his pistol into a Shell gas station convenience store. Minutes later he fired into a nearby BP gas station convenience store. No one was injured in either shooting. But the defendant admitted that he was targeting Black people and others he thought were Arab and he hoped to kill them. He also admitted that he believed in white supremacist ideology.', 'A federal grand jury indicted a Texas man for killing one person and attempting to kill four others during an attack at Omars Wheels and Tires a Muslim-owned business, because of their religious beliefs. According to evidence, the defendant went to Omars Wheels and Tires on December 24, 2015 shot and killed one person and attempted to kill three other people. As he was leaving he attempted to kill a fourth person with his vehicle.', 'A jury found a Virginia man guilty for a hate crime in in his attack on two Hispanic construction workers. Evidence showed that on July 13 2019 at about 6 p.m. the victims were closing their construction site for the day. The defendant approached the men and asked to use their power washer. When the workers did not allow the defendant to borrow the power washer he became enraged and began screaming racist epithets. He picked up a construction tool with a sharp metal blade and tried to stab one of the men. A second victim tried to intervene but he was struck in the face several times causing serious injuries.', 'A federal judge sentenced the first of three men charged with hate crimes for a February 2020 assault on a transgender woman to 33 months in prison. In August the defendant pleaded guilty to helping the attackers and harassing the victim because of her gender identity. According to evidence on February 24, 2020 the three men were traveling by car when they recognized the victim near the road in Toa Baja Puerto Rico. After identifying her the defendants verbally harassed her. The three men then drove to get a paintball gun and paintballs returned to the location and fired paintballs at her.'];
+
+var i = 0;
+let j=0;
+var speed = 50;
+
+function typeWriter() {
+  if (i < txt.length) {
+    document.getElementById("demo").innerHTML += txta[j].charAt(i);
+    i++;
+    setTimeout(typeWriter, speed);
+  }
+  else {
+    document.getElementById("demo").innerHTML = "";
+    i=0;
+    j = j==txta.length-1 ?0:j+1;
+    
+    typeWriter();
+  }
+}
+</script>
+</section>
+
+
+<form method="POST" action="{% url 'detect' %}">
+    {% csrf_token %}
+
+<input type="text" name="ipdata" class="text_input" id="text_input" placeholder="Enter Your Text...">
+<p id="demoerr"></p>
+<button type="submit" class="btn" onClick="handleform()">Predict</button>
+</form>
+
+
+
+</main>
+
+<footer>
+&copy; Designed & Developed by Rahul Verman | Faizan Ahmed | Faiz Waris | Aman Raza Khan  
+<center>Department of Computer Science | MVJ College of Engineering</center>
+
+</footer>
+
+</body>
+</html>

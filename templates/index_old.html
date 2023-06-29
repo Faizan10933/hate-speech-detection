@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    {% if prediction %}
+		<p>The text you entered has been classified as {{ prediction }}.</p>
+        <p> the mean accuracy on the given test data and labels. {{ score }}  </p>
+        <p> probablity estimate {{ prob }}</p>
+        <p> Depth of decision tree {{ dep }}</p>
+
+	{% else %}
+		<p>Please enter some text to classify.</p>
+	{% endif %}
+
+    <h1>
+        Hate speech detection
+    </h1>
+    
+    <form method="POST" action="{% url 'detect' %}">
+        {% csrf_token %}
+    <textarea name="ipdata"></textarea>
+    <button type="submit">Button</button>
+    </form>
+
+
+    {% if graph %}
+    <img src="data:image/png;base64,{{ graph }}" alt="Distribution of Labels">
+    {% endif %}
+
+</body>
+</html>
